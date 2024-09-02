@@ -1,70 +1,77 @@
-Kafka Transaction Processing Example
-This project demonstrates how to use Apache Kafka to send and consume text messages. Specifically, it simulates a scenario where bank transactions are sent to a Kafka topic by a producer and consumed by a consumer.
+
+Apache Kafka Demo: Transaction Producer and Consumer
+This project demonstrates how to create a Kafka producer to send text messages to a topic and a Kafka consumer to read those messages. The example simulates bank transactions and processes them using Kafka.
 
 Prerequisites
-Before running this project, ensure you have the following installed on your system:
-
-Docker: Used to run Kafka and Zookeeper in containers.
-Docker Compose: Facilitates the setup of multi-container Docker applications.
-Miniconda/Anaconda: Used to create and manage a Python virtual environment.
-Python 3.7+: Ensure Python is installed for running the scripts.
+Docker: Ensure you have Docker installed on your machine. Install Docker
+Python: Python 3.8 or higher installed on your machine. Install Python
+Anaconda (recommended): To manage your Python environment. Install Anaconda
+Kafka-Python: Kafka client for Python. This will be installed via the virtual environment.
 Project Setup
-1. Clone the Repository
+Clone the Repository
+
 bash
 Copy code
 git clone https://github.com/yourusername/apache-kafka-demo.git
 cd apache-kafka-demo
-2. Set Up and Activate the Python Virtual Environment
-Create a virtual environment using conda:
+Set Up the Python Environment
 
+Create a virtual environment using Conda:
 bash
 Copy code
 conda create --name kafka-env python=3.8
 conda activate kafka-env
-Install the necessary Python dependencies:
-
+Install the necessary Python packages:
 bash
 Copy code
-pip install kafka-python six
-3. Start Kafka and Zookeeper
-Kafka requires Zookeeper to run. You can start both services using Docker Compose.
+pip install kafka-python
+Start Kafka Using Docker
 
+Ensure Docker is running.
+Navigate to your project directory and start Kafka:
 bash
 Copy code
 docker-compose up -d
-4. Create a Kafka Topic
-To create a Kafka topic named bank-transactions, run the following command:
-
+Verify that the Kafka and Zookeeper containers are running:
+bash
+Copy code
+docker ps
+Create a Kafka topic for transactions:
 bash
 Copy code
 docker exec -it <kafka-container-id> /opt/kafka/bin/kafka-topics.sh --create --topic bank-transactions --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
-Replace <kafka-container-id> with the ID of your Kafka container, which you can find using docker ps.
+Run the Kafka Producer and Consumer
 
-5. Run the Kafka Producer
-The producer sends messages (bank transactions) to the bank-transactions topic.
-
+In one terminal window, run the producer:
 bash
 Copy code
 python transaction_producer.py
-6. Run the Kafka Consumer
-The consumer reads messages from the bank-transactions topic.
-
+In another terminal window, run the consumer:
 bash
 Copy code
 python transaction_consumer.py
-7. Stopping Kafka and Zookeeper
-Once you are done, you can stop Kafka and Zookeeper by bringing down the Docker containers:
+Shut Down Kafka
 
+To stop the Kafka services when you're done:
 bash
 Copy code
 docker-compose down
-How It Works
-Producer: Sends a series of bank transactions (as JSON objects) to the bank-transactions Kafka topic.
-Consumer: Listens to the bank-transactions topic and processes the transactions as they arrive.
-Key Files
-docker-compose.yml: Configures and manages the Kafka and Zookeeper services using Docker.
-transaction_producer.py: Contains the code for producing (sending) messages to Kafka.
-transaction_consumer.py: Contains the code for consuming (reading) messages from Kafka.
-Additional Notes
-Make sure Docker is running before starting Kafka and Zookeeper.
-If you encounter issues with the Python environment, double-check that you are using the correct virtual environment (kafka-env).
+Project Structure
+transaction_producer.py: Sends simulated bank transactions to the Kafka topic.
+transaction_consumer.py: Reads and processes the transactions from the Kafka topic.
+docker-compose.yml: Configuration file for Docker to set up Kafka and Zookeeper.
+How to Start and Stop Kafka
+Start Kafka:
+bash
+Copy code
+docker-compose up -d
+Stop Kafka:
+bash
+Copy code
+docker-compose down
+Notes
+Ensure that your Python environment is activated (conda activate kafka-env) when running the producer and consumer scripts.
+The project is configured to run in a development environment. Adjust the Docker and Python settings for production use as needed.
+License
+This project is licensed under the MIT License.
+
